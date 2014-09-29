@@ -1,0 +1,4 @@
+
+target 'SIAlertViewExample', :exclusive => true do
+  pod "SIAlertView", :path => "../"
+end

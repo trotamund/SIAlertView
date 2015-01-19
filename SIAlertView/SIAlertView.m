@@ -21,7 +21,12 @@ NSString *const SIAlertViewDidDismissNotification = @"SIAlertViewDidDismissNotif
 #define CONTENT_PADDING_LEFT 15
 #define CONTENT_PADDING_TOP 20
 #define BUTTON_HEIGHT 50
-#define CONTAINER_WIDTH 270
+//#define CONTAINER_WIDTH 300
+
+CGFloat const SIContainer_Width_iPhone = 300;
+CGFloat const SIContainer_Width_iPad = 500;
+
+static CGFloat CONTAINER_WIDTH = 0;
 
 const UIWindowLevel UIWindowLevelSIAlert = 1999.0;  // don't overlap system's alert
 const UIWindowLevel UIWindowLevelSIAlertBackground = 1998.0; // below the alert window
@@ -204,6 +209,8 @@ static SIAlertView *__si_alert_current_view;
     appearance.defaultButtonAttributes = @{NSFontAttributeName : defaultButtonFont};
     appearance.cancelButtonAttributes = @{NSFontAttributeName : otherButtonFont};
     appearance.destructiveButtonAttributes = @{NSFontAttributeName : otherButtonFont, NSForegroundColorAttributeName : [UIColor colorWithRed:0.96f green:0.37f blue:0.31f alpha:1.00f]};
+    
+    CONTAINER_WIDTH = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? SIContainer_Width_iPhone : SIContainer_Width_iPad;
 }
 
 - (id)initWithTitle:(NSString *)title message:(NSString *)message
@@ -343,6 +350,13 @@ static SIAlertView *__si_alert_current_view;
                      completion:^(BOOL finished) {
                          completion();
                      }];
+}
+
+#pragma mark -
+
++ (CGFloat) containerWidth {
+    
+    return CONTAINER_WIDTH;
 }
 
 #pragma mark - Setters & Getters

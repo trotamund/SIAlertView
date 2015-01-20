@@ -90,5 +90,4 @@ typedef void(^SIAlertViewHandler)(SIAlertView *alertView);
 - (void)dismissAnimated:(BOOL)animated;
 
 + (CGFloat) containerWidth;
-
 @end

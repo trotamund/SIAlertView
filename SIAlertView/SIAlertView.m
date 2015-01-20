@@ -225,11 +225,12 @@ static SIAlertView *__si_alert_current_view;
 	return self;
 }
 
-- (id)initWithTitle:(NSString *)title andCustomView:(UIView *)customView{
+- (id)initWithTitle:(NSString *)title andCustomView:(UIView *)customView {
     self = [super init];
     if (self) {
         _title = title;
         _customView = customView;
+        CONTAINER_WIDTH = CGRectGetWidth(customView.frame);
         self.items = [[NSMutableArray alloc] init];
     }
     return self;

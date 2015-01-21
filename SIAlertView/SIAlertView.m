@@ -230,7 +230,7 @@ static SIAlertView *__si_alert_current_view;
     if (self) {
         _title = title;
         _customView = customView;
-        CONTAINER_WIDTH = CGRectGetWidth(customView.frame);
+        CONTAINER_WIDTH = CGRectGetWidth(customView.frame) + CONTENT_PADDING_LEFT*2;
         self.items = [[NSMutableArray alloc] init];
     }
     return self;
@@ -276,6 +276,26 @@ static SIAlertView *__si_alert_current_view;
     [UIView animateWithDuration:0.25 animations:^{
         self.containerView.frame = frame;
     }];
+    
+}
+
+- (void) keyboardDidHide:(NSNotification *)notif {
+    
+    NSDictionary* info = [notif userInfo];
+    NSTimeInterval duration = [ info[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+    CGPoint center = CGPointMake( CGRectGetMidX(_alertWindow.frame), CGRectGetMidY(_alertWindow.frame));
+    
+    [UIView animateWithDuration:duration
+                          delay:0.0f
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         
+                         _containerView.center = center;
+                         
+                     } completion:^(BOOL finished) {
+                         
+                     }];
     
 }
 
@@ -946,6 +966,8 @@ static SIAlertView *__si_alert_current_view;
 - (void)setup
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    
     [self setupViewHierarchy];
     [self updateTitleLabel];
     [self setupCustomView];
